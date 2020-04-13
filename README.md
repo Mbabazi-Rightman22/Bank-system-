@@ -1,6 +1,6 @@
 # Bank-system-
 Bank system codes
-this is bank system managemnt program 
+this is bank system managment program 
 
 1.CREATE ACCOUNT
 2.CASH DEPOSIT
