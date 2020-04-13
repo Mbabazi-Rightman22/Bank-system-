@@ -1,0 +1,341 @@
+#include<stdio.h>
+#include<string.h>
+#include<windows.h>
+#include <stdlib.h>
+
+
+struct  bank
+{
+    char tel[12],date[50];
+    char name1[50],name2[50];
+    int no,dd,mm,yy,bal;
+}bk;
+char depo[20];
+int before,a,rank;
+int main()
+{
+    int ch;
+    printf("\n\tBANK SYSTEM MANAGMENT PROGRAM");
+    printf("\n\t*****************************");
+    do
+    {
+        printf("\n\n\n\n\t1.CREATE account");
+        printf("\n\t2.cash deposit");
+        printf("\n\t3.cash withdraw");
+        printf("\n\t4.search historic");
+        printf("\n\t5.display account information");
+        printf("\n\t0.exit");
+        printf("\n\t==========================");
+        printf("\n\tenter your choice:");
+        scanf("%d",&ch);
+        system("cls");
+        if(ch<0 || ch>6)
+        {
+            printf("\n\tinvalid choice!!\b\b\n");
+            return 0;
+        }
+        switch(ch)
+        {
+        case 1:
+            createac();
+            //system("cls");
+            break;
+        case 2:
+            cashdeposit();
+            //system("cls");
+            break;
+        case 3:
+            cashwithdraw();
+            //system("cls");
+            break;
+        case 4:
+            searchinfo();
+            //system("cls");
+            break;
+        case 5:
+            displayinfo();
+            //system("cls");
+            break;
+
+        default:
+            break;
+        }
+    }while(ch!=0);
+
+}
+
+int i=0,age,key;
+void  createac()
+{
+    FILE *m,*pro;
+    m=fopen("project.txt","a+");
+    pro=fopen("project0.txt","a+");
+    if(m==NULL)
+    {
+        printf("the file doesn't EXIST");
+    }
+    else
+    printf("\n\t\taccount owner names\n\n\t\tfirst name:");
+    scanf("%s",bk.name1);
+    printf("\n\t\tsecond name:");
+    scanf("%s",bk.name2);
+    printf("\n\t\tcreate account number(at least 4numbers):");
+    scanf("%d",&bk.no);
+    printf("\n\t\tenter date of birth(dd mm yy):");
+    scanf("%d",&bk.dd);
+    scanf("%d",&bk.mm);
+    scanf("%d",&bk.yy);
+    age=2019-(bk.yy);
+    printf("\n\t\tage:%d",age);
+    printf("\n\t\ttel phone number:");
+    scanf("%s",bk.tel);
+    printf("\n\t\tenter initial balance #RWF:");
+    scanf("%d",&bk.bal);
+    fprintf(m,"\nj%s\t%s\t%d\t%d/%d/%d\t%s\t%d\t%d\n",bk.name1,bk.name2,bk.no,bk.dd,bk.mm,bk.yy,bk.tel,age,bk.bal);
+    fprintf(pro,"\n%s\t%s\t%d\t%d/%d/%d\t%s\t%d\t%d\n",bk.name1,bk.name2,bk.no,bk.dd,bk.mm,bk.yy,bk.tel,age,bk.bal);
+    fclose(m);
+    fclose(pro);
+    system("cls");
+    printf("\n\t\tACCOUNT CREATED SUCCESSFUL!!\n\n");
+
+    printf("\n\n\t\tpress 1 to go to menu : ");
+    scanf("%d",&key);
+	system("cls");
+    if(key<=0 && key<=9)
+	{
+		main ();
+	}
+}
+void displayinfo()
+{
+    int j,check=0;
+    FILE *k;
+    k=fopen("project0.txt","r");
+    printf("\nnames               account no\tdate of birth\ttelephone\tage\n\n");
+    while(fscanf(k,"%s\t%s\t%d\t%d/%d/%d\t%s\t%d\t%d",&bk.name1,&bk.name2,&bk.no,&bk.dd,&bk.mm,&bk.yy,&bk.tel,&age,&bk.bal)!=EOF)
+    {
+        printf("\n%s %s\t\t%d\t%d/%d/%d\t%s\t%d",bk.name1,bk.name2,bk.no,bk.dd,bk.mm,bk.yy,bk.tel,age);
+        check++;
+    }
+    if(check==0)
+    {
+        printf("\n\t\tthere is no record!!\b\b\n");
+    }
+    fclose(k);
+
+    printf("\n\n\t\tpress 1 to go to menu : ");
+    scanf("%d",&key);
+	system("cls");
+    if(key<=0 && key<=9)
+	{
+		main ();
+	}
+}
+
+
+void cashdeposit()
+{
+    int a,dep,nmbr,test=0,before;
+    FILE *p,*newp,*third;
+    p=fopen("project.txt","r");
+    newp=fopen("project1.txt","w");
+    third=fopen("projectfile.txt","a");
+    //while()
+    printf("\n\t\tenter account number:");
+    scanf("%d",&nmbr);
+    while(fscanf(p,"%s\t%s\t%d\t%d/%d/%d\t%s\t%d\t%d",&bk.name1,&bk.name2,&bk.no,&bk.dd,&bk.mm,&bk.yy,&bk.tel,&age,&bk.bal)!=EOF)
+    {
+
+        if(nmbr==bk.no)
+        {
+           printf("\n\t\thow many money to deposit #RWF:");
+           scanf("%d",&dep);
+           test=0;
+           before=bk.bal;
+           bk.bal +=dep;
+
+           //printf("\n\t\tnew balance=%d",bk.bal);
+           fprintf(newp,"\n%s\t%s\t%d\t%d/%d/%d\t%s\t%d\t%d",bk.name1,bk.name2,bk.no,bk.dd,bk.mm,bk.yy,bk.tel,age,bk.bal);
+           a=bk.bal;
+           bk.bal=dep;
+           printf("\n\t\tenter date occur (dd mm yy) : ");
+           scanf("%d",&bk.dd);
+           scanf("%d",&bk.mm);
+           scanf("%d",&bk.yy);
+           rank=0;
+           char depo[]="deposition";
+           fprintf(third,"\n%s\t%s\t%s\t%d\t%d/%d/%d\t%d\t%d\t%d\t%d",bk.name1,bk.name2,depo,bk.no,bk.dd,bk.mm,bk.yy,bk.bal,a,before,rank);
+
+           //fclose(p);
+           //DATE OF DEPOSITION WILL AUTOMATIC COMPUTED
+           printf("\n\ndeposit successful!!\n");
+           printf("\n\n~~~~~~~~~~~~~~~~~~\n\nRECEIPT\n\n~~~~~~~~~~~~~~~~~~~");
+           if(test==0)
+           {
+                     printf("\n\naccount names:%s %s",bk.name1,bk.name2);
+                     printf("\n\naccount number:%d",bk.no);
+                     printf("\n\namount before deposition:%d",before);
+                     printf("\n\namount deposited:%d",dep);
+                     printf("\n\nnew balance:%d",a);
+                     printf("\n\ndate:%d-%d-%d",bk.dd,bk.mm,bk.yy);
+                     printf("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            }
+
+        }else
+        {
+            fprintf(newp,"\n%s\t%s\t%d\t%d/%d/%d\t%s\t%d\t%d",bk.name1,bk.name2,bk.no,bk.dd,bk.mm,bk.yy,bk.tel,age,bk.bal);
+            //fprintf(newp,"%s\t%s\t%d\t%d/%d/%d\t%s\t%d\t%d",bk.name1,bk.name2,bk.no,bk.dd,bk.mm,bk.yy,bk.tel,age,bk.bal);
+        }
+    }
+
+    fclose(p);
+    fclose(third);
+    fclose(newp);
+    remove("project.txt");
+    rename("project1.txt","project.txt");
+    printf("\n\n\t\tpress 1 to go to menu : ");
+    scanf("%d",&key);
+	system("cls");
+    if(key<=0 && key<=9)
+	{
+		main ();
+	}
+}
+void cashwithdraw()
+{
+    int a,dep,test,check,before;
+    FILE *first,*second,*thi;
+    first=fopen("project.txt","r");
+    second=fopen("project1.txt","w");
+    thi=fopen("projectfile.txt","a");
+    printf("\n\t\tenter account number to withdraw :");
+    scanf("%d",&test);
+    if(first==NULL)
+    {
+        printf("\n\t\tfile doesn't exist");
+    }else{
+        while(fscanf(first,"%s\t%s\t%d\t%d/%d/%d\t%s\t%d\t%d",&bk.name1,&bk.name2,&bk.no,&bk.dd,&bk.mm,&bk.yy,&bk.tel,&age,&bk.bal)!=EOF)
+        {
+
+            if(test==bk.no )
+            {
+               printf("\n\t\tinput amount of money to withdraw #RWF:");
+               scanf("%d",&dep);
+               before=bk.bal;
+                if(dep>=0&&dep<=bk.bal)
+                {
+                    bk.bal -=dep;
+                    check=0;
+                   fprintf(second,"%s\t%s\t%d\t%d/%d/%d\t%s\t%d\t%d",bk.name1,bk.name2,bk.no,bk.dd,bk.mm,bk.yy,bk.tel,age,bk.bal);
+                   a=bk.bal;
+                   bk.bal=dep;
+                   printf("\n\t\tenter date occur (dd mm yy) : ");
+                   scanf("%d",&bk.dd);
+                   scanf("%d",&bk.mm);
+                   scanf("%d",&bk.yy);
+                   fprintf(thi,"\n%s\t%s\t%d\t%d/%d/%d\t%s\t%d\t%d",bk.name1,bk.name2,bk.no,bk.dd,bk.mm,bk.yy,bk.tel,age,bk.bal);
+                   printf("\n\t\tNEW BALANCE:%d",bk.bal);
+                   printf("\n\n\t\twithdraw successful!!");
+                   printf("\n\n~~~~~~~~~~~~~~~~~~\n\nRECEIPT\n\n~~~~~~~~~~~~~~~~~~~");
+                   char depo[]="withdraw";
+                   //strcpy(dep,withi);
+
+                   rank=1;
+                   fprintf(thi,"\n%s\t%s\t%s\t%d\t%d/%d/%d\t%d\t%d\t%d\t%d",bk.name1,bk.name2,depo,bk.no,bk.dd,bk.mm,bk.yy,bk.bal,a,before,rank);
+           if(check==0)
+           {
+                     printf("\n\naccount names:%s %s",bk.name1,bk.name2);
+                     printf("\n\naccount number:%d",bk.no);
+                     printf("\n\namount before withdraw:%d",before);
+                     printf("\n\namount withdraw:%d",dep);
+                     printf("\n\nnew balance:%d",a);
+                     printf("\n\ndate: %d-%d-%d",bk.dd,bk.mm,bk.yy);
+                     printf("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            }
+                }
+            }else{
+                fprintf(second,"\n%s\t%s\t%d\t%d/%d/%d\t%s\t%d\t%d",bk.name1,bk.name2,bk.no,bk.dd,bk.mm,bk.yy,bk.tel,age,bk.bal);
+            }
+        }
+        fclose(first);
+        fclose(thi);
+        fclose(second);
+        remove("project.txt");
+        rename("project1.txt","project.txt");
+
+    }
+    printf("\n\n\t\tpress 1 to go to menu : ");
+    scanf("%d",&key);
+	system("cls");
+    if(key<=0 && key<=9)
+	{
+		main ();
+	}
+}
+void searchinfo()
+{
+    int testt;
+
+	printf("\n\t\tenter account number to search:");
+    scanf("%d",&testt);
+    FILE *sec,*third,*first;
+    first=fopen("project0.txt","r");
+    sec=fopen("project.txt","r");
+    third=fopen("projectfile.txt","r");
+
+    while(fscanf(first,"%s\t%s\t%d\t%d/%d/%d\t%s\t%d\t%d\n",&bk.name1,&bk.name2,&bk.no,&bk.dd,&bk.mm,&bk.yy,&bk.tel,&age,&bk.bal) != EOF)
+    {
+    	if(testt==bk.no)
+            {
+            	 //char initial[]="initial";
+            	 printf("\naccount name:%s %s",bk.name1,bk.name2);
+                printf("\naccount number:%d",bk.no);
+              printf("\ninitial account balance:%d\n",bk.bal);
+            }
+	}
+
+
+   printf("\nDATE      \tdetails    \t   deposit    withdraw  \tbalance\n");
+
+
+    while(fscanf(third,"%s\t%s\t%s\t%d\t%d/%d/%d\t%d\t%d\t%d\t%d",&bk.name1,&bk.name2,&depo,&bk.no,&bk.dd,&bk.mm,&bk.yy,&bk.bal,&a,&before,&rank)!=EOF)
+	{
+           if(testt==bk.no)
+            {
+			  if(rank==0)
+            {
+            	printf("\n%d/%d/%d\t%s\t    %d\t             \t\t%d",bk.dd,bk.mm,bk.yy,depo,bk.bal,a);
+			}else
+			{
+				printf("\n%d/%d/%d\t%s\t         \t%d\t        %d",bk.dd,bk.mm,bk.yy,depo,bk.bal,a);
+			}
+
+            }
+    }
+
+       if(sec==NULL)
+    {
+        printf("\n\t\tfile doesn't exist");
+    }else{
+        while(fscanf(sec,"%s\t%s\t%d\t%d/%d/%d\t%s\t%d\t%d",&bk.name1,&bk.name2,&bk.no,&bk.dd,&bk.mm,&bk.yy,&bk.tel,&age,&bk.bal)!=EOF)
+        {
+        	if(testt==bk.no)
+        	{
+        		printf("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~\nACCOUNT BALANCE \t\t\t                        %d\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n",bk.bal);
+			}
+
+        //fclose(sec);
+    }
+      }
+    fclose(third);
+    fclose(first);
+    fclose(sec);
+    printf("\n\n\t\tpress 1 to go to menu : ");
+    scanf("%d",&key);
+	system("cls");
+    if(key<=0 && key<=9)
+	{
+		main ();
+	}
+}
+
